@@ -32,9 +32,11 @@ flan = {
     mouth: 0,
     head:  0,
     hand:  0,
+    bg:    0,
 
     draw: function () {
         let xpos = this.x + (step*offset);
+        ctx.drawImage(flanBodyParts.bg,    xpos, this.y);
         ctx.drawImage(flanBodyParts.body,  xpos, this.y);
         ctx.drawImage(flanBodyParts.base,  xpos, this.y);
         ctx.drawImage(flanBodyParts.eyes,  xpos, this.y);
@@ -51,6 +53,7 @@ flanBodyParts = {
         "./assets/flans/body/cat.png",
         "./assets/flans/body/rat.png",
         "./assets/flans/body/tentacle.png",
+        "./assets/flans/body/succubus.png",
     ],
 
     baseList: [
@@ -101,7 +104,15 @@ flanBodyParts = {
         "./assets/flans/head/ribon2.png",
         "./assets/flans/head/ribon3.png",
         "./assets/flans/head/sweat.png",
+        "./assets/flans/head/angel.png",
+        "./assets/flans/head/demon.png",
+        "./assets/flans/head/pantsu.png",
+        "./assets/flans/head/gradhat.png",
+        "./assets/flans/head/tophat.png",
+        "./assets/flans/head/sunhat.png",
         "./assets/flans/head/zzz.png",
+        "./assets/flans/head/rescue.png",
+        "./assets/flans/head/crown.png",
     ],
 
     handList: [
@@ -112,6 +123,32 @@ flanBodyParts = {
         "./assets/flans/hand/firework.png",
         "./assets/flans/hand/flashlight.png",
         "./assets/flans/hand/gun.png",
+        "./assets/flans/hand/camera.png",
+        "./assets/flans/hand/phone.png",
+        "./assets/flans/hand/mic.png",
+        "./assets/flans/hand/dagger.png",
+        "./assets/flans/hand/shield.png",
+        "./assets/flans/hand/plunger.png",
+        "./assets/flans/hand/broom.png",
+        "./assets/flans/hand/scissor.png",
+        "./assets/flans/hand/toiletpaper.png",
+        "./assets/flans/hand/soap.png",
+        "./assets/flans/hand/trumpet.png",
+        "./assets/flans/hand/screwdriver.png",
+        "./assets/flans/hand/paintbrush.png",
+        "./assets/flans/hand/hypno.png",
+    ],
+
+    bgList: [
+        "./assets/flans/bg/none.png",
+        "./assets/flans/bg/beach.png",
+        "./assets/flans/bg/island.png",
+        "./assets/flans/bg/desert.png",
+        "./assets/flans/bg/japanCastle.png",
+        "./assets/flans/bg/castle.png",
+        "./assets/flans/bg/night.png",
+        "./assets/flans/bg/sunrise.png",
+        "./assets/flans/bg/volcano.png",
     ],
 
 
@@ -121,6 +158,7 @@ flanBodyParts = {
     mouth: new Image(),
     head:  new Image(),
     hand:  new Image(),
+    bg:    new Image(),
 
     sampleBody:  new Image(),
     sampleBase:  new Image(),
@@ -128,6 +166,7 @@ flanBodyParts = {
     sampleMouth: new Image(),
     sampleHead:  new Image(),
     sampleHand:  new Image(),
+    sampleBg:    new Image(),
 
     bodyL:  -1,
     baseL:  -1,
@@ -135,6 +174,7 @@ flanBodyParts = {
     mouthL: -1,
     headL:  -1,
     handL:  -1,
+    bgL:    -1,
 
   loadImages: function () {
     if(this.bodyL != flan.body){
@@ -172,6 +212,12 @@ flanBodyParts = {
         this.hand = new Image();
         this.hand.src = this.handList[flan.hand];
     }
+
+    if(this.bgL != flan.bg){
+        this.bgL = flan.bg;
+        this.bg = new Image();
+        this.bg.src = this.bgList[flan.bg];
+    }
   },
 
 }
@@ -181,12 +227,13 @@ function startGame() {
     // setup flan
     flanBodyParts.loadImages();
 
-    flanBodyParts.sampleBody.src = flanBodyParts.bodyList[1];
-    flanBodyParts.sampleBase.src = flanBodyParts.baseList[1];
-    flanBodyParts.sampleEyes.src = flanBodyParts.eyesList[1];
+    flanBodyParts.sampleBody.src  = flanBodyParts.bodyList[1];
+    flanBodyParts.sampleBase.src  = flanBodyParts.baseList[1];
+    flanBodyParts.sampleEyes.src  = flanBodyParts.eyesList[1];
     flanBodyParts.sampleMouth.src = flanBodyParts.mouthList[1];
-    flanBodyParts.sampleHead.src = flanBodyParts.headList[1];
-    flanBodyParts.sampleHand.src = flanBodyParts.handList[1];
+    flanBodyParts.sampleHead.src  = flanBodyParts.headList[1];
+    flanBodyParts.sampleHand.src  = flanBodyParts.handList[1];
+    flanBodyParts.sampleBg.src    = flanBodyParts.bgList[1];
 
     // start game loop
     gameLoop();
@@ -372,10 +419,15 @@ function update() {
         }
     } else if(step == 6){
         if(keyEvt.pressedNow.up){
-            // flan.bg++;
+            flan.bg++;
         }
         if(keyEvt.pressedNow.down){
-            // flan.bg--;
+            flan.bg--;
+        }
+        if(flan.bg > flanBodyParts.bgList.length-1){
+            flan.bg = flanBodyParts.bgList.length-1;
+        } else if(flan.bg < 0){
+            flan.bg = 0;
         }
     } else if(step == 7){
 
@@ -390,6 +442,7 @@ function update() {
             flan.head = 0;
             flan.hand = 0;
             flan.body = 0;
+            flan.bg = 0;
         }
     }
 
@@ -415,6 +468,7 @@ function draw() {
     ctx.drawImage(flanBodyParts.sampleHead,  15 + 3*offset, 450);
     ctx.drawImage(flanBodyParts.sampleHand,  15 + 4*offset, 450);
     ctx.drawImage(flanBodyParts.sampleBody,  15 + 5*offset, 450);
+    ctx.drawImage(flanBodyParts.sampleBg,    15 + 6*offset, 450);
 
 }
 
@@ -427,6 +481,7 @@ function generateFlan() {
     combinedCanvas.height = flan.height;
 
     // Draw all the flan parts onto the combined canvas
+    combinedCtx.drawImage(flanBodyParts.bg,    0, 0);
     combinedCtx.drawImage(flanBodyParts.body,  0, 0);
     combinedCtx.drawImage(flanBodyParts.base,  0, 0);
     combinedCtx.drawImage(flanBodyParts.eyes,  0, 0);
